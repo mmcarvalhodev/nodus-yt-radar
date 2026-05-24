@@ -1,0 +1,44 @@
+# Backend — kept private
+WORKER_YT_RADAR.js
+
+# Build artifacts
+*.zip
+
+# Build scripts (kept local)
+_make_zips.py
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs and temp
+*.log
+.tmp/
+tmp/
+
+# Node (if anyone ever adds tooling)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Secrets (just in case)
+.env
+.env.local
+*.key
+*.pem

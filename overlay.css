@@ -1,0 +1,54 @@
+#yt-rank-radar-overlay {
+  position: fixed !important;
+  z-index: 2147483647;
+  background: rgba(0, 0, 0, 0.78);
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 999px;
+  pointer-events: auto;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  letter-spacing: 0.3px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  user-select: none;
+  transition: background 0.15s, transform 0.1s;
+}
+
+#yt-rank-radar-overlay:hover {
+  background: rgba(30, 30, 30, 0.92);
+  transform: scale(1.04);
+}
+
+#yt-rank-radar-ticker {
+  position: fixed !important;
+  z-index: 2147483647;
+  height: 32px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.72);
+  color: #fff;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  user-select: none;
+}
+
+#yt-rank-radar-ticker span {
+  white-space: nowrap;
+  display: inline-block;
+  padding-left: 100%;
+  animation: ytRankRadarTicker 18s linear infinite;
+  letter-spacing: 0.3px;
+}
+
+@keyframes ytRankRadarTicker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}

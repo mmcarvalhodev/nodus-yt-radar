@@ -1,0 +1,13 @@
+name = "worker-yt-radar"
+main = "WORKER_YT_RADAR.js"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB_PROMOTIONS"
+database_name = "nodus-promotions"
+database_id = "d763c244-1f11-4da1-8703-a94e1e8c35aa"
+
+[[d1_databases]]
+binding = "DB_LICENSES"
+database_name = "nodus-licenses-db"
+database_id = "6fd7f75c-a1e8-47ee-a501-d800c8d5f540"

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NODUS YT Radar</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="app">
+
+    <header class="header">
+      <img class="header-logo-img" src="icons/icontop.png" alt="NODUS YT Radar" />
+      <div class="header-controls">
+        <button id="gear-btn" class="gear-btn" title="Settings">⚙</button>
+      </div>
+    </header>
+
+    <div class="analysis-block" id="analysis-block">
+      <div class="analysis-label" id="analysis-label"></div>
+      <div id="current-video" class="current-video-container">
+        <div class="empty-state" data-i18n="ui.noVideo"></div>
+      </div>
+      <div id="story-section" style="display:none">
+        <div class="analysis-divider"></div>
+        <div id="story-block" class="story-block"></div>
+      </div>
+      <div id="metrics-section" style="display:none">
+        <div class="analysis-divider"></div>
+        <div id="current-metrics"></div>
+      </div>
+      <div id="history-section" style="display:none">
+        <div class="analysis-divider"></div>
+        <div id="history-block" class="history-block"></div>
+      </div>
+    </div>
+
+    <section class="card spotlight-card">
+      <div id="ad-container" class="ad-container"></div>
+    </section>
+
+    <section class="card top-videos-card">
+      <div class="card-title-row">
+        <div class="card-title tv-title"><span class="tv-icon">🔥</span><span class="tv-text" data-i18n="ui.topVideos">Top 50</span></div>
+        <div class="top-videos-filters">
+          <select id="region-select" class="filter-select"></select>
+          <select id="category-select" class="filter-select"></select>
+        </div>
+      </div>
+      <span id="last-updated" class="last-updated"></span>
+      <div id="top-videos-list" class="top-videos-list">
+        <div class="empty-state">Loading...</div>
+      </div>
+    </section>
+
+  </div>
+
+  <div id="settings-modal" class="settings-modal">
+    <div class="sm-overlay" id="sm-overlay"></div>
+    <div class="sm-sheet">
+      <div class="sm-handle"></div>
+      <div class="sm-title" data-i18n="ui.settings">Settings</div>
+      <div class="sm-body">
+        <div class="sm-row sm-row-uimode" id="sm-row-uimode" style="display:none">
+          <label class="sm-label" for="ui-mode" data-i18n="ui.openAs">Open as</label>
+          <select id="ui-mode" class="sm-select">
+            <option value="popup"     data-i18n="ui.openAsPopup">Popup</option>
+            <option value="sidepanel" data-i18n="ui.openAsSidePanel">Side panel</option>
+          </select>
+        </div>
+        <div class="sm-row">
+          <label class="sm-label" for="overlay-mode" data-i18n="ui.overlay">Overlay</label>
+          <select id="overlay-mode" class="sm-select">
+            <option value="badge"    data-i18n="ui.badge">Badge</option>
+            <option value="expanded" data-i18n="ui.expanded">Expanded</option>
+            <option value="ticker"   data-i18n="ui.ticker">Ticker</option>
+            <option value="off"      data-i18n="ui.off">Off</option>
+          </select>
+        </div>
+        <div class="sm-row">
+          <label class="sm-label" for="cache-ttl" data-i18n="ui.refresh">Refresh</label>
+          <select id="cache-ttl" class="sm-select">
+            <option value="15" data-i18n="ui.min15">15 min</option>
+            <option value="30" data-i18n="ui.min30">30 min</option>
+            <option value="60" data-i18n="ui.h1">1 hour</option>
+          </select>
+        </div>
+        <div class="sm-row">
+          <label class="sm-label" for="lang-select" data-i18n="ui.language">Language</label>
+          <select id="lang-select" class="sm-select"></select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tip-box"></div>
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

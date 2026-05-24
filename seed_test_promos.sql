@@ -1,0 +1,36 @@
+-- Limpa promos de teste anteriores
+DELETE FROM promotions WHERE id IN ('test-nodus-preview','promo-test-free-001','promo-test-bronze-001','promo-test-silver-001');
+
+-- 5 SILVER (weight 6, 14 dias)
+INSERT INTO promotions (id,user_email,youtube_video_id,title,channel,thumbnail_url,description,tier,status,weight,regions,categories,start_at,end_at,start_view_count,last_view_count,created_at,access_token) VALUES
+('promo-silver-001','seed@test.com','JGwWNGJdvx8','Ed Sheeran - Shape of You','Ed Sheeran','https://img.youtube.com/vi/JGwWNGJdvx8/mqdefault.jpg','','silver','active',6,'[]','[]',unixepoch('now'),unixepoch('now')+1209600,0,0,unixepoch('now'),NULL);
+INSERT INTO promotions (id,user_email,youtube_video_id,title,channel,thumbnail_url,description,tier,status,weight,regions,categories,start_at,end_at,start_view_count,last_view_count,created_at,access_token) VALUES
+('promo-silver-002','seed@test.com','RgKAFK5djSk','Wiz Khalifa - See You Again ft. Charlie Puth','WizKhalifaVEVO','https://img.youtube.com/vi/RgKAFK5djSk/mqdefault.jpg','','silver','active',6,'[]','[]',unixepoch('now'),unixepoch('now')+1209600,0,0,unixepoch('now'),NULL);
+INSERT INTO promotions (id,user_email,youtube_video_id,title,channel,thumbnail_url,description,tier,status,weight,regions,categories,start_at,end_at,start_view_count,last_view_count,created_at,access_token) VALUES
+('promo-silver-003','seed@test.com','OPf0YbXqDm0','Mark Ronson - Uptown Funk ft. Bruno Mars','MarkRonsonVEVO','https://img.youtube.com/vi/OPf0YbXqDm0/mqdefault.jpg','','silver','active',6,'[]','[]',unixepoch('now'),unixepoch('now')+1209600,0,0,unixepoch('now'),NULL);
+INSERT INTO promotions (id,user_email,youtube_video_id,title,channel,thumbnail_url,description,tier,status,weight,regions,categories,start_at,end_at,start_view_count,last_view_count,created_at,access_token) VALUES
+('promo-silver-004','seed@test.com','YQHsXMglC9A','Adele - Hello','AdeleVEVO','https://img.youtube.com/vi/YQHsXMglC9A/mqdefault.jpg','','silver','active',6,'[]','[]',unixepoch('now'),unixepoch('now')+1209600,0,0,unixepoch('now'),NULL);
+INSERT INTO promotions (id,user_email,youtube_video_id,title,channel,thumbnail_url,description,tier,status,weight,regions,categories,start_at,end_at,start_view_count,last_view_count,created_at,access_token) VALUES
+('promo-silver-005','seed@test.com','kJQP7kiw5Fk','Luis Fonsi - Despacito ft. Daddy Yankee','LuisFonsiVEVO','https://img.youtube.com/vi/kJQP7kiw5Fk/mqdefault.jpg','','silver','active',6,'[]','[]',unixepoch('now'),unixepoch('now')+1209600,0,0,unixepoch('now'),NULL);
+
+-- 10 BRONZE (weight 3, 7 dias)
+INSERT INTO promotions (id,user_email,youtube_video_id,title,channel,thumbnail_url,description,tier,status,weight,regions,categories,start_at,end_at,start_view_count,last_view_count,created_at,access_token) VALUES
+('promo-bronze-001','seed@test.com','dQw4w9WgXcQ','Rick Astley - Never Gonna Give You Up','RickAstleyVEVO','https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg','','bronze','active',3,'[]','[]',unixepoch('now'),unixepoch('now')+604800,0,0,unixepoch('now'),NULL);
+INSERT INTO promotions (id,user_email,youtube_video_id,title,channel,thumbnail_url,description,tier,status,weight,regions,categories,start_at,end_at,start_view_count,last_view_count,created_at,access_token) VALUES
+('promo-bronze-002','seed@test.com','9bZkp7q19f0','PSY - GANGNAM STYLE','officialpsy','https://img.youtube.com/vi/9bZkp7q19f0/mqdefault.jpg','','bronze','active',3,'[]','[]',unixepoch('now'),unixepoch('now')+604800,0,0,unixepoch('now'),NULL);
+INSERT INTO promotions (id,user_email,youtube_video_id,title,channel,thumbnail_url,description,tier,status,weight,regions,categories,start_at,end_at,start_view_count,last_view_count,created_at,access_token) VALUES
+('promo-bronze-003','seed@test.com','hT_nvWreIhg','One Direction - What Makes You Beautiful','OneDirectionVEVO','https://img.youtube.com/vi/hT_nvWreIhg/mqdefault.jpg','','bronze','active',3,'[]','[]',unixepoch('now'),unixepoch('now')+604800,0,0,unixepoch('now'),NULL);
+INSERT INTO promotions (id,user_email,youtube_video_id,title,channel,thumbnail_url,description,tier,status,weight,regions,categories,start_at,end_at,start_view_count,last_view_count,created_at,access_token) VALUES
+('promo-bronze-004','seed@test.com','CevxZvSJLk8','Katy Perry - Roar','KatyPerryVEVO','https://img.youtube.com/vi/CevxZvSJLk8/mqdefault.jpg','','bronze','active',3,'[]','[]',unixepoch('now'),unixepoch('now')+604800,0,0,unixepoch('now'),NULL);
+INSERT INTO promotions (id,user_email,youtube_video_id,title,channel,thumbnail_url,description,tier,status,weight,regions,categories,start_at,end_at,start_view_count,last_view_count,created_at,access_token) VALUES
+('promo-bronze-005','seed@test.com','nfWlot6h_JM','Taylor Swift - Shake It Off','TaylorSwiftVEVO','https://img.youtube.com/vi/nfWlot6h_JM/mqdefault.jpg','','bronze','active',3,'[]','[]',unixepoch('now'),unixepoch('now')+604800,0,0,unixepoch('now'),NULL);
+INSERT INTO promotions (id,user_email,youtube_video_id,title,channel,thumbnail_url,description,tier,status,weight,regions,categories,start_at,end_at,start_view_count,last_view_count,created_at,access_token) VALUES
+('promo-bronze-006','seed@test.com','09R8_2nJtjg','Maroon 5 - Sugar','Maroon5VEVO','https://img.youtube.com/vi/09R8_2nJtjg/mqdefault.jpg','','bronze','active',3,'[]','[]',unixepoch('now'),unixepoch('now')+604800,0,0,unixepoch('now'),NULL);
+INSERT INTO promotions (id,user_email,youtube_video_id,title,channel,thumbnail_url,description,tier,status,weight,regions,categories,start_at,end_at,start_view_count,last_view_count,created_at,access_token) VALUES
+('promo-bronze-007','seed@test.com','pRpeEdMmmQ0','Shakira - Waka Waka','shakiraVEVO','https://img.youtube.com/vi/pRpeEdMmmQ0/mqdefault.jpg','','bronze','active',3,'[]','[]',unixepoch('now'),unixepoch('now')+604800,0,0,unixepoch('now'),NULL);
+INSERT INTO promotions (id,user_email,youtube_video_id,title,channel,thumbnail_url,description,tier,status,weight,regions,categories,start_at,end_at,start_view_count,last_view_count,created_at,access_token) VALUES
+('promo-bronze-008','seed@test.com','e-ORhEE9VVg','Eminem - Lose Yourself','EminemVEVO','https://img.youtube.com/vi/e-ORhEE9VVg/mqdefault.jpg','','bronze','active',3,'[]','[]',unixepoch('now'),unixepoch('now')+604800,0,0,unixepoch('now'),NULL);
+INSERT INTO promotions (id,user_email,youtube_video_id,title,channel,thumbnail_url,description,tier,status,weight,regions,categories,start_at,end_at,start_view_count,last_view_count,created_at,access_token) VALUES
+('promo-bronze-009','seed@test.com','fJ9rUzIMcZQ','Queen - Bohemian Rhapsody','Queen Official','https://img.youtube.com/vi/fJ9rUzIMcZQ/mqdefault.jpg','','bronze','active',3,'[]','[]',unixepoch('now'),unixepoch('now')+604800,0,0,unixepoch('now'),NULL);
+INSERT INTO promotions (id,user_email,youtube_video_id,title,channel,thumbnail_url,description,tier,status,weight,regions,categories,start_at,end_at,start_view_count,last_view_count,created_at,access_token) VALUES
+('promo-bronze-010','seed@test.com','lp-EO5I60KA','Adele - Rolling in the Deep','AdeleVEVO','https://img.youtube.com/vi/lp-EO5I60KA/mqdefault.jpg','','bronze','active',3,'[]','[]',unixepoch('now'),unixepoch('now')+604800,0,0,unixepoch('now'),NULL);

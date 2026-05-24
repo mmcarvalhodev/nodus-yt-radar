@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>YT Radar — Análise de Performance v3 (Mockup)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #1a1a1a;
+    color: #fff;
+    font-family: -apple-system, "Segoe UI", Arial, sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px;
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .label-col {
+    color: #888;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .popup {
+    width: 430px;
+    background: #ffffff;
+    color: #111;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #ff8800;
+  }
+  .header-logo {
+    color: #ff8800;
+    font-weight: 900;
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+  .header-logo span { color: #facc15; }
+  .gear { color: #aaa; font-size: 16px; cursor: pointer; }
+
+  /* ── ANALYZING NOW LABEL ── */
+  .analysis-label {
+    padding: 10px 16px 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #555;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ── VIDEO INFO ── */
+  .video-row {
+    display: flex;
+    gap: 12px;
+    padding: 0 16px 14px;
+  }
+  .video-thumb {
+    width: 120px;
+    height: 68px;
+    background: linear-gradient(135deg, #facc15, #ff8800);
+    border-radius: 4px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+  }
+  .video-meta { flex: 1; min-width: 0; }
+  .video-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #111;
+    line-height: 1.3;
+    margin-bottom: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .video-channel {
+    font-size: 11.5px;
+    color: #666;
+    margin-bottom: 6px;
+  }
+  .chips { display: flex; gap: 5px; }
+  .chip {
+    font-size: 10px;
+    background: #f0f0f0;
+    color: #555;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+
+  .divider {
+    height: 1px;
+    background: #eee;
+    margin: 0 16px;
+  }
+
+  /* ── STORY (frase-síntese) ── */
+  .story {
+    padding: 14px 14px;
+    background: linear-gradient(90deg, rgba(255,136,0,0.06) 0%, rgba(255,136,0,0) 100%);
+    border-left: 3px solid #ff8800;
+    margin: 10px 12px;
+    border-radius: 0 6px 6px 0;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .story-icon { font-size: 18px; flex-shrink: 0; line-height: 1.2; }
+  .story-text {
+    font-size: 12.5px;
+    color: #333;
+    line-height: 1.45;
+  }
+  .story-text strong { color: #111; font-weight: 700; }
+  .story-text .num { color: #ff4400; font-weight: 700; }
+
+  /* ── METRIC GRID ── */
+  .grid-title {
+    padding: 12px 16px 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #555;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .grid-title .arrow { color: #888; font-size: 10px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 0 16px 16px;
+  }
+  .cell {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    padding: 12px;
+    position: relative;
+  }
+  .cell-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #888;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .info-icon {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ccc;
+    color: #fff;
+    font-size: 8px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: help;
+  }
+  .cell-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: #111;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .cell-value .small { font-size: 10px; font-weight: 400; color: #888; }
+  .cell-sub {
+    font-size: 11px;
+    color: #666;
+    line-height: 1.35;
+  }
+  .cell-sub strong { color: #333; font-weight: 700; }
+
+  /* mini-meter horizontal */
+  .meter {
+    margin-top: 8px;
+    height: 16px;
+    position: relative;
+  }
+  .meter-track {
+    position: absolute;
+    top: 7px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #e5e5e5;
+    border-radius: 2px;
+  }
+  .meter-fill {
+    position: absolute;
+    top: 7px;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #fbbf24, #ff4400);
+    border-radius: 2px;
+  }
+  .meter-marker {
+    position: absolute;
+    top: 1px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #ff4400;
+    transform: translateX(-50%);
+    z-index: 2;
+  }
+  .meter-baseline {
+    position: absolute;
+    top: 4px;
+    width: 2px;
+    height: 8px;
+    background: #94a3b8;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+  .meter-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    font-size: 9.5px;
+    color: #888;
+  }
+
+  .cell-tag {
+    margin-top: 6px;
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .tag-good { background: rgba(16,185,129,0.12); color: #047857; }
+  .tag-mid  { background: rgba(245,158,11,0.12); color: #b45309; }
+  .tag-bad  { background: rgba(100,116,139,0.18); color: #475569; }
+  .tag-hot  { background: rgba(255,68,0,0.12); color: #c2410c; }
+
+  /* ── EVOLUTION SECTION ── */
+  .evo-block {
+    padding: 12px 16px 18px;
+  }
+  .evo-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #555;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .sparkline {
+    width: 100%;
+    height: 44px;
+    background: #fafafa;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .sparkline svg { width: 100%; height: 100%; display: block; }
+  .delta-row {
+    margin-top: 10px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .delta-pill {
+    background: rgba(255,136,0,0.08);
+    border: 1px solid rgba(255,136,0,0.2);
+    color: #b45309;
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 10px;
+  }
+
+  .marker {
+    display: inline-block;
+    background: #fee2e2;
+    color: #b91c1c;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 3px;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+
+  /* ── NOTES PANEL ── */
+  .notes {
+    width: 380px;
+    color: #cbd5e1;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .notes h2 {
+    color: #facc15;
+    font-size: 16px;
+    margin-bottom: 14px;
+    font-weight: 700;
+  }
+  .notes h3 {
+    color: #fff;
+    font-size: 13px;
+    margin: 18px 0 6px;
+    font-weight: 600;
+  }
+  .notes p { margin-bottom: 10px; color: #94a3b8; }
+  .notes ul { padding-left: 18px; margin-bottom: 12px; }
+  .notes li { margin-bottom: 5px; color: #94a3b8; }
+  .notes code {
+    background: #2a2a2a;
+    color: #facc15;
+    font-size: 11.5px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: Consolas, monospace;
+  }
+  .compare {
+    background: #232323;
+    border-left: 3px solid #facc15;
+    border-radius: 0 4px 4px 0;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    font-size: 12px;
+  }
+  .compare .before {
+    color: #ef4444;
+    text-decoration: line-through;
+    text-decoration-color: rgba(239,68,68,0.4);
+  }
+  .compare .arrow { color: #888; margin: 0 6px; }
+  .compare .after { color: #34d399; font-weight: 600; }
+
+  .principle {
+    background: rgba(250,204,21,0.06);
+    border: 1px solid rgba(250,204,21,0.2);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    font-size: 12.5px;
+    color: #fde68a;
+  }
+  .principle strong { color: #facc15; }
+</style>
+</head>
+<body>
+
+  <!-- BEFORE -->
+  <div>
+    <div class="label-col">Antes</div>
+    <div class="popup">
+      <div class="header"><div class="header-logo">NODUS <span>YT RADAR</span></div><div class="gear">⚙</div></div>
+      <div class="analysis-label">📹 ANALISANDO AGORA</div>
+      <div class="video-row">
+        <div class="video-thumb">2M</div>
+        <div class="video-meta">
+          <div class="video-title">SUBNAUTICA 2 já vendeu 2 MILHÕES de CÓPIAS!! #FGN</div>
+          <div class="video-channel">Cortes do Flow Games · 24K</div>
+          <div class="chips">
+            <span class="chip">🇧🇷 Brasil</span>
+            <span class="chip">Pessoas e Vlogs</span>
+          </div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="grid-title">Análise de performance <span class="arrow">▼</span></div>
+      <div class="grid">
+        <div class="cell">
+          <div class="cell-label">HEAT <span class="info-icon">i</span></div>
+          <div class="cell-value" style="color:#ffab00">56<span class="small">/100</span></div>
+          <div style="margin-top:6px; height:4px; background:#eee; border-radius:2px; overflow:hidden"><div style="height:100%; width:56%; background:linear-gradient(90deg,#fbbf24,#ff4400)"></div></div>
+        </div>
+        <div class="cell">
+          <div class="cell-label">RANK</div>
+          <div class="cell-value" style="font-size:18px; color:#ea580c">🇧🇷 Top 50+ <span class="marker">jargão</span></div>
+          <div class="cell-sub">Views acima do corte, mas fora do ranking oficial <span class="marker">tb jargão</span></div>
+        </div>
+        <div class="cell">
+          <div class="cell-label">VELOCITY <span class="info-icon">i</span></div>
+          <div class="cell-value">3<span class="small">%</span></div>
+          <div class="cell-sub">vs avg Top 50 <span class="marker">é bom? é ruim?</span></div>
+        </div>
+        <div class="cell">
+          <div class="cell-label">MOMENTUM</div>
+          <div class="cell-value" style="font-size:13px; color:#ffab00">🟠 Subindo Forte</div>
+          <div class="cell-sub">+8K/day</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AFTER -->
+  <div>
+    <div class="label-col" style="color:#facc15">Depois (proposta v3)</div>
+    <div class="popup">
+      <div class="header"><div class="header-logo">NODUS <span>YT RADAR</span></div><div class="gear">⚙</div></div>
+      <div class="analysis-label">📹 ANALISANDO AGORA</div>
+      <div class="video-row">
+        <div class="video-thumb">2M</div>
+        <div class="video-meta">
+          <div class="video-title">SUBNAUTICA 2 já vendeu 2 MILHÕES de CÓPIAS!! #FGN</div>
+          <div class="video-channel">Cortes do Flow Games · 24K views</div>
+          <div class="chips">
+            <span class="chip">🇧🇷 Brasil</span>
+            <span class="chip">Pessoas e Vlogs</span>
+          </div>
+        </div>
+      </div>
+      <div class="divider"></div>
+
+      <!-- frase-síntese mais concreta -->
+      <div class="story">
+        <div class="story-icon">📊</div>
+        <div class="story-text">
+          Esse vídeo tem <span class="num">+12K views</span> a mais que o último do Top 50 do Brasil,
+          mas <strong>o YouTube não colocou ele no chart</strong> porque cresceu devagar nas últimas horas
+          (<span class="num">50 views/h</span> vs <span class="num">1.500/h</span> da média).
+        </div>
+      </div>
+
+      <div class="grid-title">Métricas <span class="arrow">▼</span></div>
+      <div class="grid">
+
+        <!-- POSIÇÃO — usa frase plana + número concreto -->
+        <div class="cell">
+          <div class="cell-label">POSIÇÃO NO BRASIL <span class="info-icon">i</span></div>
+          <div class="cell-value" style="font-size:16px; color:#ea580c">Forte, fora do oficial</div>
+          <div class="cell-sub">
+            <strong>24K views</strong> — o #50 oficial tem <strong>12K</strong><br>
+            (você passa do mínimo, mas o YouTube exige + recência/velocidade)
+          </div>
+        </div>
+
+        <!-- HEAT com mini-meter (Frio → Viral) -->
+        <div class="cell">
+          <div class="cell-label">HEAT <span class="info-icon">i</span></div>
+          <div class="cell-value" style="color:#ffab00">56<span class="small">/100</span></div>
+          <div class="cell-sub"><strong>Acima da média</strong> (Top 50 BR fica em ~70)</div>
+          <div class="meter">
+            <div class="meter-track"></div>
+            <div class="meter-fill" style="width:56%"></div>
+            <div class="meter-marker" style="left:56%"></div>
+          </div>
+          <div class="meter-labels"><span>❄️ Frio</span><span>🔥 Viral</span></div>
+        </div>
+
+        <!-- VELOCIDADE em views/hora reais -->
+        <div class="cell">
+          <div class="cell-label">VELOCIDADE AGORA <span class="info-icon">i</span></div>
+          <div class="cell-value">50<span class="small"> views/h</span></div>
+          <div class="cell-sub">Vídeos no Top 50 fazem <strong>~1.500/h</strong></div>
+          <span class="cell-tag tag-bad">↘ Caindo · era 200/h há 6h</span>
+        </div>
+
+        <!-- ENGAJAMENTO com baseline YouTube -->
+        <div class="cell">
+          <div class="cell-label">ENGAJAMENTO <span class="info-icon">i</span></div>
+          <div class="cell-value" style="color:#16a34a">6.2<span class="small">%</span></div>
+          <div class="cell-sub">Média do YouTube: <strong>1–3%</strong></div>
+          <span class="cell-tag tag-good">✓ 2× acima da média</span>
+        </div>
+      </div>
+
+      <div class="evo-block">
+        <div class="evo-label">Evolução de views (últimas 48h)</div>
+        <div class="sparkline">
+          <svg viewBox="0 0 380 40" preserveAspectRatio="none">
+            <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff8800" stop-opacity="0.25"/><stop offset="100%" stop-color="#ff8800" stop-opacity="0"/></linearGradient></defs>
+            <polygon points="0,40 0,22 50,18 100,15 150,12 200,10 250,8 300,7 380,6 380,40" fill="url(#g2)"/>
+            <polyline points="0,22 50,18 100,15 150,12 200,10 250,8 300,7 380,6" fill="none" stroke="#ff8800" stroke-width="1.5"/>
+            <circle cx="380" cy="6" r="3" fill="#ff8800"/>
+          </svg>
+        </div>
+        <div class="delta-row">
+          <span class="delta-pill">+2K nas últimas 24h</span>
+          <span class="delta-pill">+6K em 6h</span>
+          <span class="delta-pill">+50 nas últimas 1h</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTES -->
+  <div class="notes">
+    <h2>Princípio: ancorar em números reais</h2>
+
+    <div class="principle">
+      <strong>Regra:</strong> toda métrica responde "isso é bom ou ruim?" em ≤1 segundo, sem precisar interpretar abstrações tipo "/100" ou "vs avg Top 50".
+    </div>
+
+    <p>Cada valor agora vem com a <strong>referência concreta</strong> ao lado: "Top 50 BR faz 1.500/h", "Média YouTube: 1–3%", "o #50 tem 12K views". O usuário compara visualmente, sem fazer conta mental.</p>
+
+    <h3>POSIÇÃO — antes vs depois</h3>
+    <div class="compare">
+      <span class="before">"Top 50+"</span><span class="arrow">→</span><span class="after">"Forte, fora do oficial"</span>
+    </div>
+    <div class="compare">
+      <span class="before">"Views acima do corte, mas fora do ranking oficial"</span><span class="arrow">→</span><span class="after">"24K views — o #50 oficial tem 12K"</span>
+    </div>
+    <p>O termo "corte" sumiu. Em vez disso: o número que ele tem, o número que precisaria, e em 1 linha extra <em>por que</em> o YouTube não o incluiu mesmo com views suficientes.</p>
+
+    <h3>HEAT — antes vs depois</h3>
+    <div class="compare">
+      <span class="before">"56/100"</span><span class="arrow">→</span><span class="after">"56/100 · Acima da média (Top 50 BR fica ~70)"</span>
+    </div>
+    <p>Mini-meter Frio→Viral com a bolinha posicionada visualmente. Acaba a pergunta "56 é bom?".</p>
+
+    <h3>VELOCIDADE — antes vs depois</h3>
+    <div class="compare">
+      <span class="before">"3% vs avg Top 50"</span><span class="arrow">→</span><span class="after">"50 views/h — Top 50 faz ~1.500/h"</span>
+    </div>
+    <p>Trocar percentual abstrato por <strong>views/hora reais</strong>. E adicionar "era 200/h há 6h" mostra a desaceleração com contexto temporal real, não só uma tag.</p>
+
+    <h3>ENGAJAMENTO — novo</h3>
+    <div class="compare">
+      <span class="after">"6.2% — Média do YouTube: 1–3% · 2× acima"</span>
+    </div>
+    <p>Sempre acompanhado da média global do YouTube. 6.2% sozinho não diz nada; comparado a 1–3% diz "esse vídeo prende a audiência".</p>
+
+    <h3>Frase-síntese — antes vs depois</h3>
+    <p>A frase do topo agora usa os mesmos números que estão nas células abaixo: <code>+12K views</code>, <code>50 views/h</code>, <code>1.500/h</code>. O usuário lê a frase, olha pras métricas, e <strong>reconhece os mesmos números</strong>. Cria coerência narrativa.</p>
+
+    <h3>Delta pills — antes vs depois</h3>
+    <div class="compare">
+      <span class="before">"+2K / 1h"</span><span class="arrow">→</span><span class="after">"+2K nas últimas 24h"</span>
+    </div>
+    <p>Adicionar "nas últimas X" em vez do código abreviado "/1h" — leitura imediata, sem decodificar.</p>
+
+    <h3>Tooltips (não desenhei, mas seriam:)</h3>
+    <ul>
+      <li><strong>POSIÇÃO:</strong> "O YouTube mantém um Top 50 oficial por país. Estar 'fora do oficial' com views suficientes é normal — o algoritmo pondera também velocidade, recência e diversidade de criadores."</li>
+      <li><strong>HEAT:</strong> "Score combinado: 45% velocidade, 20% views, 20% engajamento, 15% recência. Vídeos no Top 50 BR ficam em média 70. Acima de 80 = explodindo."</li>
+      <li><strong>VELOCIDADE:</strong> "Views por hora atual. A média do Top 50 BR oscila entre 1.000 e 3.000/h. Abaixo disso = saindo da fila. Acima = entrando."</li>
+      <li><strong>ENGAJAMENTO:</strong> "(likes + 3×comentários) ÷ views. A média do YouTube é 1–3%. Acima de 5% indica audiência fortemente engajada."</li>
+    </ul>
+
+    <h3>Resumo</h3>
+    <p><strong>Antes:</strong> métricas abstratas ("/100", "%", "vs avg") obrigam o usuário a saber a referência.</p>
+    <p><strong>Depois:</strong> cada métrica traz a referência embutida na própria célula.</p>
+  </div>
+
+</body>
+</html>

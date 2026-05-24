@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>NODUS YT Radar — Mockup</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #222;
+      display: flex;
+      justify-content: center;
+      padding: 32px;
+      font-family: Arial, sans-serif;
+    }
+
+    /* ── Popup shell ── */
+    .popup {
+      width: 420px;
+      background: #0f0f0f;
+      color: #fff;
+      font-size: 13px;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px #00000080;
+    }
+
+    .popup-scroll {
+      max-height: 600px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #ff8800 #111;
+    }
+    .popup-scroll::-webkit-scrollbar { width: 4px; }
+    .popup-scroll::-webkit-scrollbar-track { background: #111; }
+    .popup-scroll::-webkit-scrollbar-thumb { background: #ff8800; border-radius: 2px; }
+
+    .app {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: #222;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: #0f0f0f;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      height: 48px;
+      border-bottom: 1px solid #1e1e1e;
+    }
+
+    .logo { display: flex; align-items: center; gap: 8px; }
+
+    .logo-icon {
+      width: 28px; height: 28px;
+      background: #1a1a1a;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+
+    .logo-text { font-size: 14px; font-weight: 700; letter-spacing: 0.4px; }
+
+    .gear-btn {
+      background: #1a1a1a;
+      color: #777;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 5px 8px;
+      font-size: 14px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .gear-btn:hover { border-color: #555; color: #fff; }
+
+    /* ── Cards ── */
+    .card { background: #0f0f0f; padding: 12px 14px; }
+
+    .card-title {
+      font-size: 11px; font-weight: 700;
+      color: #888; text-transform: uppercase; letter-spacing: 0.8px;
+    }
+
+    .card-title-row {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    /* ── Analysis block (video + metrics merged) ── */
+    .analysis-block {
+      background: #111;
+      border-top: 2px solid #ff8800;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .analysis-label {
+      font-size: 10px; font-weight: 700;
+      color: #ff8800; text-transform: uppercase; letter-spacing: 1px;
+    }
+
+    /* ── Current video ── */
+    .video-info-row { display: flex; gap: 10px; align-items: flex-start; }
+
+    .video-thumb {
+      width: 96px; height: 54px;
+      object-fit: cover; border-radius: 5px;
+      flex-shrink: 0; background: #1a1a1a;
+    }
+
+    .video-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+
+    .video-title {
+      font-size: 13px; font-weight: 600; color: #fff;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .video-channel-views { font-size: 11px; color: #888; }
+
+    .video-context {
+      display: flex;
+      gap: 6px;
+    }
+
+    .vc-chip {
+      font-size: 10px;
+      color: #aaa;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 999px;
+      padding: 2px 8px;
+    }
+
+    .analysis-divider {
+      height: 1px;
+      background: #1e1e1e;
+    }
+
+    /* ── History / sparkline ── */
+    .history-block {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .history-label {
+      font-size: 10px; color: #555;
+      text-transform: uppercase; letter-spacing: 0.6px;
+    }
+
+    .sparkline-wrap {
+      width: 100%; height: 40px;
+      position: relative;
+    }
+
+    .sparkline-wrap svg {
+      width: 100%; height: 100%;
+      display: block;
+    }
+
+    .history-no-data {
+      font-size: 11px; color: #444; font-style: italic;
+    }
+
+    .delta-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .delta-pill {
+      font-size: 10px; font-weight: 700;
+      color: #00c853;
+      background: #00c85318;
+      border: 1px solid #00c85340;
+      border-radius: 999px;
+      padding: 2px 8px;
+    }
+
+    .delta-pill.neutral { color: #888; background: #88888818; border-color: #88888840; }
+
+    .trend-tag {
+      font-size: 10px; color: #aaa;
+      margin-left: auto;
+    }
+    .trend-tag.accel { color: #ff8800; }
+    .trend-tag.slow  { color: #555; }
+
+    /* ── Metric grid ── */
+    .metric-group {
+      background: #0d0d0d;
+      border: 1px solid #1e1e1e;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: default;
+    }
+
+    .metric-group-title {
+      font-size: 10px; font-weight: 700;
+      color: #555; text-transform: uppercase; letter-spacing: 0.8px;
+      padding: 7px 10px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: color 0.2s;
+    }
+
+    .metric-group:hover .metric-group-title {
+      color: #aaa;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    .metric-group-arrow {
+      font-size: 9px; color: #333;
+      transition: transform 0.25s, color 0.2s;
+    }
+
+    .metric-group:hover .metric-group-arrow {
+      transform: rotate(180deg);
+      color: #666;
+    }
+
+    .metric-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .metric-group:hover .metric-grid {
+      max-height: 200px;
+    }
+
+    .metric-cell {
+      padding: 8px 10px;
+      display: flex; flex-direction: column; gap: 3px;
+      border-right: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    .metric-cell:nth-child(2n) { border-right: none; }
+    .metric-cell:nth-child(3),
+    .metric-cell:nth-child(4)  { border-bottom: none; }
+
+    .mc-label {
+      font-size: 10px; color: #555;
+      text-transform: uppercase; letter-spacing: 0.6px;
+      display: flex; align-items: center; gap: 4px;
+    }
+
+    .mc-info {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 12px; height: 12px;
+      border-radius: 50%; border: 1px solid #333;
+      color: #444; font-size: 8px; font-weight: 700;
+      cursor: help; flex-shrink: 0; line-height: 1;
+      font-style: normal;
+    }
+    .mc-info:hover { border-color: #666; color: #aaa; }
+
+    .mc-value { font-size: 15px; font-weight: 700; line-height: 1.1; }
+    .mc-rank  { font-size: 13px; }
+    .mc-found { color: #00c853; }
+    .mc-estimated { color: #ffab00; }
+    .mc-sub   { font-size: 10px; color: #555; }
+
+    .mc-bar-wrap {
+      height: 3px; background: #1a1a1a;
+      border-radius: 999px; overflow: hidden; margin-top: 2px;
+    }
+    .mc-bar { height: 100%; border-radius: 999px; }
+
+    /* ── Spotlight ── */
+    .spotlight-card { padding-bottom: 14px; }
+
+    .spotlight-label {
+      font-size: 10px; color: #444;
+      text-transform: uppercase; letter-spacing: 1px;
+      display: block; margin-bottom: 8px;
+    }
+
+    .spotlight-wrap { border-radius: 8px; overflow: hidden; background: #111; }
+
+    .spotlight-carousel {
+      position: relative; height: 160px;
+      overflow: hidden; background: #000;
+    }
+
+    .spotlight-carousel img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+
+    .vs-gradient {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, #000000dd 0%, #00000055 45%, transparent 75%);
+    }
+
+    .vs-tier {
+      position: absolute; top: 8px; right: 8px;
+      font-size: 9px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.6px;
+      padding: 3px 8px; border-radius: 999px;
+      color: #ffd700; border: 1px solid #ffd70070; background: #000000b0;
+    }
+
+    .vs-info {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 10px 12px;
+      display: flex; align-items: flex-end;
+      justify-content: space-between; gap: 8px;
+    }
+
+    .vs-title  { font-size: 12px; font-weight: 700; color: #fff; }
+    .vs-ch     { font-size: 10px; color: #bbb; margin-top: 2px; }
+
+    .vs-watch {
+      font-size: 11px; font-weight: 700; color: #ff4444;
+      background: #ff444425; border: 1px solid #ff444455;
+      padding: 4px 12px; border-radius: 999px;
+      text-decoration: none; white-space: nowrap; flex-shrink: 0;
+    }
+
+    .spotlight-progress { height: 2px; background: #1a1a1a; }
+    .spotlight-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #ffd700, #ff8800);
+      width: 35%;
+    }
+
+    /* ── Top Videos filters ── */
+    .top-videos-filters {
+      display: flex; align-items: center; gap: 5px;
+    }
+
+    .filter-select {
+      background: #1a1a1a; color: #aaa;
+      border: 1px solid #2a2a2a; border-radius: 5px;
+      padding: 3px 6px; font-size: 11px; cursor: pointer; outline: none;
+    }
+    .filter-select:hover { border-color: #444; color: #fff; }
+
+    .last-updated { font-size: 10px; color: #555; }
+
+    /* ── Top Videos list ── */
+    .top-videos-list { display: flex; flex-direction: column; }
+
+    .tv-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px; margin: 0 -6px;
+      border-bottom: 1px solid #161616;
+      text-decoration: none; color: inherit;
+      border-radius: 4px; cursor: pointer;
+    }
+    .tv-item:hover { background: #181818; }
+
+    .tv-rank {
+      font-size: 11px; font-weight: 700; color: #555;
+      width: 20px; text-align: center; flex-shrink: 0;
+    }
+    .tv-rank.gold   { color: #ffd700; }
+    .tv-rank.silver { color: #c0c0c0; }
+    .tv-rank.bronze { color: #cd7f32; }
+
+    .tv-thumb {
+      width: 56px; height: 32px;
+      object-fit: cover; border-radius: 3px;
+      background: #1a1a1a; flex-shrink: 0;
+    }
+
+    .tv-info { flex: 1; min-width: 0; }
+
+    .tv-title {
+      font-size: 11px; font-weight: 600; color: #ddd;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    .tv-ch { font-size: 10px; color: #777; margin-top: 1px; }
+    .tv-views { font-size: 10px; color: #666; white-space: nowrap; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+<div class="popup">
+  <div class="popup-scroll">
+    <div class="app">
+
+      <!-- HEADER: logo + gear only -->
+      <header class="header">
+        <div class="logo">
+          <div class="logo-icon">📡</div>
+          <span class="logo-text">NODUS</span>
+        </div>
+        <button class="gear-btn">⚙</button>
+      </header>
+
+      <!-- ANALYSIS BLOCK: vídeo + métricas unificados -->
+      <div class="analysis-block">
+
+        <div class="analysis-label">📹 Analisando agora</div>
+
+        <div class="video-info-row">
+          <img class="video-thumb" src="https://i.ytimg.com/vi/jLEn-iDxkFE/mqdefault.jpg" alt="" />
+          <div class="video-meta">
+            <div class="video-title">O que um jogo deve ter para manter a vontade de jogar?</div>
+            <div class="video-channel-views">Cogumelando Videogame · 57K visualizações</div>
+            <div class="video-context">
+              <span class="vc-chip">🇧🇷 Brasil</span>
+              <span class="vc-chip">People &amp; Blogs</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="analysis-divider"></div>
+
+        <div class="metric-group">
+          <div class="metric-group-title">Análise de performance</div>
+          <div class="metric-grid">
+
+            <div class="metric-cell">
+              <div class="mc-label">
+                HEAT
+                <i class="mc-info" title="Score 0–100 baseado em velocidade de crescimento, views vs Top 50, engajamento e recência.">i</i>
+              </div>
+              <div class="mc-value" style="color:#ffab00">38<span style="font-size:10px;font-weight:400;color:#555">/100</span></div>
+              <div class="mc-bar-wrap"><div class="mc-bar" style="width:38%;background:#ffab00"></div></div>
+            </div>
+
+            <div class="metric-cell">
+              <div class="mc-label">
+                RANK
+                <i class="mc-info" title="Posição no ranking de trending. 'Top 50+' significa que está acima do corte mas fora do ranking oficial.">i</i>
+              </div>
+              <div class="mc-value mc-rank mc-estimated">Top 50+</div>
+              <div class="mc-sub">Views acima do corte</div>
+            </div>
+
+            <div class="metric-cell">
+              <div class="mc-label">
+                VELOCITY
+                <i class="mc-info" title="Velocidade de crescimento atual vs média dos Top 50. 100% = mesmo ritmo de um vídeo trending típico.">i</i>
+              </div>
+              <div class="mc-value">0<span style="font-size:10px;font-weight:400;color:#555">%</span></div>
+              <div class="mc-sub">vs avg Top 50</div>
+            </div>
+
+            <div class="metric-cell">
+              <div class="mc-label">
+                MOMENTUM
+                <i class="mc-info" title="Classificação geral do momento do vídeo: Cold → Heating Up → Rising Fast → Viral → Exploding.">i</i>
+              </div>
+              <div class="mc-value" style="font-size:12px;color:#ffab00">● Aquecendo</div>
+              <div class="mc-sub">+107/day</div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="analysis-divider"></div>
+
+        <!-- HISTÓRICO: sparkline + deltas -->
+        <div class="history-block">
+          <div class="history-label">Evolução de views</div>
+
+          <div class="sparkline-wrap">
+            <svg viewBox="0 0 380 40" preserveAspectRatio="none">
+              <!-- área preenchida -->
+              <defs>
+                <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#ff8800" stop-opacity="0.25"/>
+                  <stop offset="100%" stop-color="#ff8800" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <polygon
+                points="0,38 0,32 40,30 80,28 120,25 160,22 200,20 240,15 280,12 320,9 360,6 380,4 380,38"
+                fill="url(#sg)"
+              />
+              <!-- linha -->
+              <polyline
+                points="0,32 40,30 80,28 120,25 160,22 200,20 240,15 280,12 320,9 360,6 380,4"
+                fill="none"
+                stroke="#ff8800"
+                stroke-width="1.5"
+                stroke-linejoin="round"
+                stroke-linecap="round"
+              />
+              <!-- ponto atual -->
+              <circle cx="380" cy="4" r="3" fill="#ff8800"/>
+            </svg>
+          </div>
+
+          <div class="delta-row">
+            <span class="delta-pill">+1.2K / 1h</span>
+            <span class="delta-pill">+5.8K / 6h</span>
+            <span class="delta-pill">+18K / 24h</span>
+            <span class="trend-tag accel">⚡ Acelerando</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- COMMUNITY SPOTLIGHT -->
+      <section class="card spotlight-card">
+        <span class="spotlight-label">Community Spotlight</span>
+        <div class="spotlight-wrap">
+          <div class="spotlight-carousel">
+            <img src="https://i.ytimg.com/vi/7uxPrNrGDa4/mqdefault.jpg" alt="" />
+            <div class="vs-gradient"></div>
+            <span class="vs-tier">★ Premium</span>
+            <div class="vs-info">
+              <div>
+                <div class="vs-title">Nodus Preview</div>
+                <div class="vs-ch">M M Carvalho</div>
+              </div>
+              <a class="vs-watch" href="#">Watch →</a>
+            </div>
+          </div>
+          <div class="spotlight-progress">
+            <div class="spotlight-progress-bar"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TOP VIDEOS: filtros BR/categoria no header -->
+      <section class="card">
+        <div class="card-title-row">
+          <div class="card-title">Top Videos</div>
+          <div class="top-videos-filters">
+            <select class="filter-select">
+              <option>🇧🇷 BR</option>
+              <option>🇺🇸 US</option>
+              <option>🇵🇹 PT</option>
+            </select>
+            <select class="filter-select">
+              <option>People &amp; Blogs</option>
+              <option>Gaming</option>
+              <option>Music</option>
+              <option>Todos</option>
+            </select>
+            <span class="last-updated">Agora</span>
+          </div>
+        </div>
+
+        <div class="top-videos-list">
+
+          <a class="tv-item" href="#">
+            <div class="tv-rank gold">#1</div>
+            <img class="tv-thumb" src="https://i.ytimg.com/vi/dQw4w9WgXcQ/default.jpg" alt="" />
+            <div class="tv-info">
+              <div class="tv-title">[HYBE x Geffen] World Scout: The Final Piece</div>
+              <div class="tv-ch">HYBE LABELS</div>
+            </div>
+            <div class="tv-views">229K</div>
+          </a>
+
+          <a class="tv-item" href="#">
+            <div class="tv-rank silver">#2</div>
+            <img class="tv-thumb" src="https://i.ytimg.com/vi/dQw4w9WgXcQ/default.jpg" alt="" />
+            <div class="tv-info">
+              <div class="tv-title">Sins of Alchemax | Marvel Rivals Season 8</div>
+              <div class="tv-ch">Marvel Rivals</div>
+            </div>
+            <div class="tv-views">928K</div>
+          </a>
+
+          <a class="tv-item" href="#">
+            <div class="tv-rank bronze">#3</div>
+            <img class="tv-thumb" src="https://i.ytimg.com/vi/dQw4w9WgXcQ/default.jpg" alt="" />
+            <div class="tv-info">
+              <div class="tv-title">Título longo para testar o truncamento do texto</div>
+              <div class="tv-ch">Canal Exemplo</div>
+            </div>
+            <div class="tv-views">1,2M</div>
+          </a>
+
+          <a class="tv-item" href="#">
+            <div class="tv-rank">#4</div>
+            <img class="tv-thumb" src="https://i.ytimg.com/vi/dQw4w9WgXcQ/default.jpg" alt="" />
+            <div class="tv-info">
+              <div class="tv-title">Outro vídeo no ranking trending</div>
+              <div class="tv-ch">Canal Teste</div>
+            </div>
+            <div class="tv-views">542K</div>
+          </a>
+
+          <a class="tv-item" href="#">
+            <div class="tv-rank">#5</div>
+            <img class="tv-thumb" src="https://i.ytimg.com/vi/dQw4w9WgXcQ/default.jpg" alt="" />
+            <div class="tv-info">
+              <div class="tv-title">Mais um vídeo completando a lista</div>
+              <div class="tv-ch">Canal X</div>
+            </div>
+            <div class="tv-views">88K</div>
+          </a>
+
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>
