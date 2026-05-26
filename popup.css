@@ -69,7 +69,10 @@ body::-webkit-scrollbar-thumb { background: #ff8800; border-radius: 2px; }
   flex: 1;
   height: 56px;
   min-width: 0;
-  object-fit: cover;
+  /* contain (not cover) so the wordmark scales down instead of being
+     cropped when the header gets tight (e.g. dash button + gear in
+     side panel mode). object-position keeps it left-aligned. */
+  object-fit: contain;
   object-position: left center;
 }
 
