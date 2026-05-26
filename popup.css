@@ -1060,6 +1060,40 @@ body::-webkit-scrollbar-thumb { background: #ff8800; border-radius: 2px; }
   color: #fff;
 }
 
+/* ── Dash button (side panel toggle) — mirrors .gear-btn styling ── */
+.dash-btn {
+  background: #1a1a1a;
+  color: #777;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 5px 7px;
+  cursor: pointer;
+  outline: none;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.dash-btn:hover {
+  border-color: #555;
+  color: #fff;
+}
+
+/* When the user is currently in side-panel mode, the button glows orange to
+   indicate the active state. Clicking it again switches back to popup mode. */
+.dash-btn.active {
+  background: rgba(255, 136, 0, 0.15);
+  border-color: #ff8800;
+  color: #ff8800;
+}
+
+.dash-btn.active:hover {
+  background: rgba(255, 136, 0, 0.22);
+  color: #ffa733;
+}
+
 /* ── Analysis block ── */
 .analysis-block {
   background: #111;

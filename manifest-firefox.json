@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "NODUS YT Radar",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Real-time trending rank, viral score and momentum analytics for the YouTube video you're watching, by country.",
   "browser_specific_settings": {
     "gecko": {

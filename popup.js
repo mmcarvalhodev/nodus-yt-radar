@@ -29,12 +29,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   $("cache-ttl").value    = String(currentSettings.cacheTTLMinutes || 30);
   $("lang-select").value  = currentLang;
 
-  // Only show the "Open as" setting in browsers that support side panel (Chrome MV3).
-  // In Firefox there's no chrome.sidePanel — the row stays hidden, popup is the only mode.
+  // Only show the "Open as" setting + header dash button in browsers that support
+  // side panel (Chrome MV3). In Firefox there's no chrome.sidePanel — both stay hidden.
   if (typeof chrome !== "undefined" && chrome.sidePanel) {
     const uiModeRow = $("sm-row-uimode");
     if (uiModeRow) uiModeRow.style.display = "";
     $("ui-mode").value = currentSettings.uiMode || "popup";
+    initDashButton();
   }
 
   // Auto-detect region from the active YouTube tab
@@ -138,11 +139,47 @@ async function onCacheTTLChange() {
 
 async function onUIModeChange() {
   const next = $("ui-mode").value;
+  await switchUIMode(next, { openPanelNow: false });
+}
+
+// ── Header dash button: 1-click toggle popup ↔ side panel ────────
+function initDashButton() {
+  const dashBtn = $("dash-btn");
+  if (!dashBtn) return;
+  dashBtn.style.display = "";
+  updateDashButtonState(currentSettings.uiMode || "popup");
+  dashBtn.addEventListener("click", async () => {
+    const current = currentSettings.uiMode || "popup";
+    const next    = current === "sidepanel" ? "popup" : "sidepanel";
+    await switchUIMode(next, { openPanelNow: next === "sidepanel" });
+  });
+}
+
+function updateDashButtonState(mode) {
+  const dashBtn = $("dash-btn");
+  if (!dashBtn) return;
+  const isSide = mode === "sidepanel";
+  dashBtn.classList.toggle("active", isSide);
+  dashBtn.title = isSide ? "Switch to popup" : "Open as side panel";
+}
+
+async function switchUIMode(next, { openPanelNow }) {
   currentSettings.uiMode = next;
   await sendMessage({ type: "SAVE_SETTINGS", settings: currentSettings });
-  // Ask background to reconfigure chrome.action.setPopup so the new mode
-  // takes effect on the next toolbar click without requiring a reload.
   await sendMessage({ type: "APPLY_UI_MODE", uiMode: next });
+  if ($("ui-mode")) $("ui-mode").value = next;
+  updateDashButtonState(next);
+  if (openPanelNow && chrome.sidePanel?.open) {
+    const tab = await new Promise((r) => chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => r(tabs[0])));
+    if (tab?.id) {
+      try {
+        await chrome.sidePanel.open({ tabId: tab.id });
+        window.close(); // popup closes since the panel is taking over
+      } catch (err) {
+        console.warn("[YT Radar] sidePanel.open failed:", err?.message || err);
+      }
+    }
+  }
 }
 
 async function onLangChange() {

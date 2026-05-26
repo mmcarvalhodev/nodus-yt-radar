@@ -3,7 +3,7 @@
 **Real-time regional ranking, viral score and momentum for the YouTube video you're watching.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/Version-0.2.0-green.svg)](https://github.com/mmcarvalhodev/nodus-yt-radar)
+[![Version](https://img.shields.io/badge/Version-0.2.1-green.svg)](https://github.com/mmcarvalhodev/nodus-yt-radar)
 [![Platform](https://img.shields.io/badge/Platform-Chrome%20%7C%20Firefox%20%7C%20Edge%20%7C%20Brave-orange.svg)](https://nodus-ai.app/yt-radar)
 [![Privacy](https://img.shields.io/badge/No%20account-required-brightgreen.svg)](https://nodus-ai.app/yt-radar-privacy)
 
